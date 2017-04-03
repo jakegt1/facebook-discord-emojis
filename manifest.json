@@ -1,0 +1,13 @@
+{
+	"manifest_version": 2,
+	"name": "Facebook Discord Emojis",
+	"version": "0.1",
+	"content_scripts": [
+		{
+			"matches": [
+				"https://www.facebook.com/*"
+			],
+			"js": ["node_modules/jquery/dist/jquery.min.js", "src/app.js"]
+		}
+	]
+}

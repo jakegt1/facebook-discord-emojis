@@ -1,7 +1,10 @@
 # Facebook discord emojis
 
+## Prerequisites
+* browserify installed globally.
+
 ## Installation
-The simple installation outside of a package is to simply npm install then add the folder into your google chrome extensions via developer mode.
+The simple installation outside of a package is to simply npm install then npm run build to browserify src/app.js.
 
 ## Usage
 Similar to discord, you simply write :[COMMAND]:, which the code then replaces with an emoji.

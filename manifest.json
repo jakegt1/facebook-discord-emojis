@@ -7,7 +7,7 @@
 			"matches": [
 				"https://www.facebook.com/*"
 			],
-			"js": ["node_modules/jquery/dist/jquery.min.js", "src/app.js"]
+			"js": ["node_modules/jquery/dist/jquery.min.js", "src/bundle.js"]
 		}
 	]
 }

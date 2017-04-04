@@ -4,9 +4,11 @@
   "description": "facebook discord emojis for google chrome",
   "main": "src/app.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+	"build": "browserify src/app.js -o src/bundle.js"
   },
   "dependencies": {
+	"discord-emoji": "1.1.1",
   	"jquery": "3.2.1"
   },
   "author": "Jake Torrance",

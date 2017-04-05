@@ -54,6 +54,39 @@ var makeIterable = function(object){
     return object
 }
 
+var mapEmojis = function(matches, html){
+    matches = matches ? matches : [];
+    for(let match of matches){
+        var matchWithoutColons = match.slice(1, -1);
+        matchEmoji = matchMap[matchWithoutColons];
+        if(matchEmoji){
+            html = html.replace(match, matchEmoji);
+        }
+    }
+    return html
+}
+
+var searchForMatch = function(match, matchMap){
+    var searchResult = "";
+    for(var emoji in matchMap){
+        if(emoji.indexOf(match) == 0){
+            searchResult = emoji;
+            break;
+        }
+    }
+    return searchResult
+}
+
+var searchHandler = function(matches, $emoji){
+    if(matches){
+        var match = matches[0]
+        match = match.slice(1, match.length);
+        $emoji.html(searchForMatch(match, matchMap));
+    } else {
+        $emoji.html("");
+    }
+}
+
 var emojis = require('discord-emoji');
 emojis = makeIterable(emojis);
 
@@ -61,29 +94,36 @@ var matchMap = {};
 for(var object of emojis){
     matchMap = addToObject(matchMap, object);
 }
+matchMap = makeIterable(matchMap);
 
 $('body').on('DOMNodeInserted', '[contenteditable="true"]', function(){
+    var reCommand = /:[a-zA-Z0-9-_]+:/;
+    var reSearch = /:[a-zA-Z0-9-_]+/;
     var $self = $(this);
+    var $content = $self.find('[data-block="true"]')
+    if($content.find('.emoji').length == 0){
+        var $div = $('<div/>').addClass('emoji');
+        var $predictionSpan = $('<span/>').addClass('emoji-prediction');
+        $content.append($div);
+        $div.append($predictionSpan);
+    }
+    var $emoji = $content.find('.emoji-prediction');
     $self.off('keypress');
     $self.keypress(function(event){
+        var character = String.fromCharCode(event.which);
         var $this = $(this);
         var $span = $this.find('[data-text="true"]');
         var textObj = $span[0].firstChild;
         var html = $span.html();
-        var re = /:[a-zA-Z0-9-_]+:/;
-        var matches = re.exec(html);
-        if(matches){
-            var matchEmoji = null;
-            for(let match of matches){
-                var matchWithoutColons = match.slice(1, -1);
-                matchEmoji = matchMap[matchWithoutColons];
-                if(matchEmoji){
-                    html = html.replace(match, matchEmoji);
-                }
-            }
-            if(matchEmoji){
-                pasteHtmlAtCaret(html);
-            }
+        var matches = reCommand.exec(html);
+        var newHtml = mapEmojis(matches, html);
+        if(newHtml != html){
+            pasteHtmlAtCaret(newHtml);
+            $emoji.html("");
+        } else {
+            html = html + character;
+            matches = reSearch.exec(html)
+            searchHandler(matches, $emoji);
         }
     })
 })

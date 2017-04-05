@@ -100,14 +100,15 @@ $('body').on('DOMNodeInserted', '[contenteditable="true"]', function(){
     var reCommand = /:[a-zA-Z0-9-_]+:/;
     var reSearch = /:[a-zA-Z0-9-_]+/;
     var $self = $(this);
+    var $parent = $self.parent();
     var $content = $self.find('[data-block="true"]')
-    if($content.find('.emoji').length == 0){
-        var $div = $('<div/>').addClass('emoji');
+    if($parent.find('.emoji').length == 0){
+        var $div = $('<div/>').addClass('emoji').css('color', 'gray');
         var $predictionSpan = $('<span/>').addClass('emoji-prediction');
-        $content.append($div);
+        $div.insertAfter($self);
         $div.append($predictionSpan);
     }
-    var $emoji = $content.find('.emoji-prediction');
+    var $emoji = $parent.find('.emoji-prediction');
     $self.off('keypress');
     $self.keypress(function(event){
         var character = String.fromCharCode(event.which);

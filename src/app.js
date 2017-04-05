@@ -32,6 +32,7 @@ function pasteHtmlAtCaret(html) {
         document.selection.createRange().pasteHTML(html);
     }
 }
+
 function addToObject(object, otherObject){
     for(var prop in otherObject){
         if(otherObject.hasOwnProperty(prop)){
@@ -40,16 +41,26 @@ function addToObject(object, otherObject){
     }
     return object
 }
+
+var makeIterable = function(object){
+    object[Symbol.iterator] = function *(){
+        var names = Object.getOwnPropertyNames(this);
+        var i = 0;
+        while(i < names.length){
+            yield this[names[i]];
+            i++;
+        }
+    }
+    return object
+}
+
 var emojis = require('discord-emoji');
+emojis = makeIterable(emojis);
+
 var matchMap = {};
-matchMap = addToObject(matchMap, emojis.emoji);
-matchMap = addToObject(matchMap, emojis.people);
-matchMap = addToObject(matchMap, emojis.nature);
-matchMap = addToObject(matchMap, emojis.objects);
-matchMap = addToObject(matchMap, emojis.food);
-matchMap = addToObject(matchMap, emojis.activity);
-matchMap = addToObject(matchMap, emojis.symbols);
-matchMap = addToObject(matchMap, emojis.travel);
+for(var object of emojis){
+    matchMap = addToObject(matchMap, object);
+}
 
 $('body').on('DOMNodeInserted', '[contenteditable="true"]', function(){
     var $self = $(this);

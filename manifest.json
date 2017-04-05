@@ -1,7 +1,10 @@
 {
+	"default_locale": "en",
+	"description": "discord style emoji mappings for facebook",
+	"homepage_url": "https://github.com/jakegt1/facebook-discord-emojis",
 	"manifest_version": 2,
 	"name": "Facebook Discord Emojis",
-	"version": "0.1",
+	"version": "0.0.1",
 	"content_scripts": [
 		{
 			"matches": [

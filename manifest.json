@@ -1,9 +1,13 @@
 {
-	"default_locale": "en",
-	"description": "discord style emoji mappings for facebook",
+	"description": ":thinking: style emoji mappings for facebook",
 	"homepage_url": "https://github.com/jakegt1/facebook-discord-emojis",
 	"manifest_version": 2,
-	"name": "Facebook Discord Emojis",
+	"icons": {
+		"16": "icon.png",
+		"48": "icon.png",
+		"128":"icon.png"
+	},
+	"name": "Facebook Emoji Mappings",
 	"version": "0.0.1",
 	"content_scripts": [
 		{

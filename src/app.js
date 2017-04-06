@@ -98,7 +98,7 @@ matchMap = makeIterable(matchMap);
 
 $('body').on('DOMNodeInserted', '[contenteditable="true"]', function(){
     let reCommand = /:[a-zA-Z0-9-_]+:/;
-    let reSearch = /:[a-zA-Z0-9-_]+/;
+    let reSearch = /:[a-zA-Z0-9-_]+$/;
     let $self = $(this);
     let $parent = $self.parent();
     if($parent.find('.emoji').length == 0){

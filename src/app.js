@@ -109,6 +109,16 @@ $('body').on('DOMNodeInserted', '[contenteditable="true"]', function(){
     }
     let $emoji = $parent.find('.emoji-prediction');
     $self.off('keypress');
+    $self.off('keyup');
+    $self.keyup(function(event){
+        if(event.which == 8){
+            let $this = $(this);
+            let $span = $this.find('[data-text="true"]');
+            let html = $span.html();
+            let matches = reSearch.exec(html);
+            searchHandler(matches, $emoji);
+        }
+    })
     $self.keypress(function(event){
         let character = String.fromCharCode(event.which);
         let $this = $(this);

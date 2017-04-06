@@ -34,7 +34,7 @@ function pasteHtmlAtCaret(html) {
 }
 
 function addToObject(object, otherObject){
-    for(var prop in otherObject){
+    for(let prop in otherObject){
         if(otherObject.hasOwnProperty(prop)){
             object[prop] = otherObject[prop];
         }
@@ -42,10 +42,10 @@ function addToObject(object, otherObject){
     return object
 }
 
-var makeIterable = function(object){
+let makeIterable = function(object){
     object[Symbol.iterator] = function *(){
-        var names = Object.getOwnPropertyNames(this);
-        var i = 0;
+        let names = Object.getOwnPropertyNames(this);
+        let i = 0;
         while(i < names.length){
             yield this[names[i]];
             i++;
@@ -54,10 +54,10 @@ var makeIterable = function(object){
     return object
 }
 
-var mapEmojis = function(matches, html){
+let mapEmojis = function(matches, html){
     matches = matches ? matches : [];
     for(let match of matches){
-        var matchWithoutColons = match.slice(1, -1);
+        let matchWithoutColons = match.slice(1, -1);
         matchEmoji = matchMap[matchWithoutColons];
         if(matchEmoji){
             html = html.replace(match, matchEmoji);
@@ -66,9 +66,9 @@ var mapEmojis = function(matches, html){
     return html
 }
 
-var searchForMatch = function(match, matchMap){
-    var searchResult = "";
-    for(var emoji in matchMap){
+let searchForMatch = function(match, matchMap){
+    let searchResult = "";
+    for(let emoji in matchMap){
         if(emoji.indexOf(match) == 0){
             searchResult = emoji;
             break;
@@ -77,9 +77,9 @@ var searchForMatch = function(match, matchMap){
     return searchResult
 }
 
-var searchHandler = function(matches, $emoji){
+let searchHandler = function(matches, $emoji){
     if(matches){
-        var match = matches[0]
+        let match = matches[0]
         match = match.slice(1, match.length);
         $emoji.html(searchForMatch(match, matchMap));
     } else {
@@ -87,37 +87,36 @@ var searchHandler = function(matches, $emoji){
     }
 }
 
-var emojis = require('discord-emoji');
+let emojis = require('discord-emoji');
 emojis = makeIterable(emojis);
 
-var matchMap = {};
-for(var object of emojis){
+let matchMap = {};
+for(let object of emojis){
     matchMap = addToObject(matchMap, object);
 }
 matchMap = makeIterable(matchMap);
 
 $('body').on('DOMNodeInserted', '[contenteditable="true"]', function(){
-    var reCommand = /:[a-zA-Z0-9-_]+:/;
-    var reSearch = /:[a-zA-Z0-9-_]+/;
-    var $self = $(this);
-    var $parent = $self.parent();
-    var $content = $self.find('[data-block="true"]')
+    let reCommand = /:[a-zA-Z0-9-_]+:/;
+    let reSearch = /:[a-zA-Z0-9-_]+/;
+    let $self = $(this);
+    let $parent = $self.parent();
     if($parent.find('.emoji').length == 0){
-        var $div = $('<div/>').addClass('emoji').css('color', 'gray');
-        var $predictionSpan = $('<span/>').addClass('emoji-prediction');
+        let $div = $('<div/>').addClass('emoji').css('color', 'gray');
+        let $predictionSpan = $('<span/>').addClass('emoji-prediction');
         $div.insertAfter($self);
         $div.append($predictionSpan);
     }
-    var $emoji = $parent.find('.emoji-prediction');
+    let $emoji = $parent.find('.emoji-prediction');
     $self.off('keypress');
     $self.keypress(function(event){
-        var character = String.fromCharCode(event.which);
-        var $this = $(this);
-        var $span = $this.find('[data-text="true"]');
-        var textObj = $span[0].firstChild;
-        var html = $span.html();
-        var matches = reCommand.exec(html);
-        var newHtml = mapEmojis(matches, html);
+        let character = String.fromCharCode(event.which);
+        let $this = $(this);
+        let $span = $this.find('[data-text="true"]');
+        let textObj = $span[0].firstChild;
+        let html = $span.html();
+        let matches = reCommand.exec(html);
+        let newHtml = mapEmojis(matches, html);
         if(newHtml != html){
             pasteHtmlAtCaret(newHtml);
             $emoji.html("");

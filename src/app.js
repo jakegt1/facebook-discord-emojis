@@ -111,7 +111,7 @@ $('body').on('DOMNodeInserted', '[contenteditable="true"]', function(){
     $self.off('keypress');
     $self.off('keyup');
     $self.keyup(function(event){
-        if(event.which == 8){
+        if(event.which == 8 || event.which == 13){
             let $this = $(this);
             let $span = $this.find('[data-text="true"]');
             let html = $span.html();

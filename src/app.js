@@ -111,15 +111,15 @@ $('body').on('DOMNodeInserted', '[contenteditable="true"]', function(){
     $self.off('keypress');
     $self.off('keydown');
     $self.keydown(function(event){
-        if(event.which == 8 || event.which == 13){
-            let $this = $(this);
-            let $span = $this.find('[data-text="true"]');
-            let html = $span.html();
-            if(event.which == 8){
-                html = html.slice(0, -1)
-            }
+        let $this = $(this);
+        let $span = $this.find('[data-text="true"]');
+        let html = $span.html();
+        if(event.which == 8){
+            html = html.slice(0, -1)
             let matches = reSearch.exec(html);
             searchHandler(matches, $emoji);
+        } else if(event.which == 13) {
+            searchHandler(null, $emoji);
         }
     })
     $self.keypress(function(event){
